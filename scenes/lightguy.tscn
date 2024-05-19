@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://dn05ddwdntlao"]
+
+[ext_resource type="Script" path="res://scenes/lamp.gd" id="1_b2rbt"]
+[ext_resource type="Texture2D" uid="uid://o2o06sj3ovo0" path="res://sprites/entities_set.png" id="1_y6y4f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ac6ff"]
+atlas = ExtResource("1_y6y4f")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ytx8"]
+atlas = ExtResource("1_y6y4f")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msbp2"]
+atlas = ExtResource("1_y6y4f")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lb4u0"]
+atlas = ExtResource("1_y6y4f")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8ink"]
+atlas = ExtResource("1_y6y4f")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1nmjc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ac6ff")
+}],
+"loop": true,
+"name": &"AtkHurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ytx8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msbp2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lb4u0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n8ink")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k2ppp"]
+size = Vector2(18, 28)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5v5g6"]
+radius = 18.0278
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7la5m"]
+radius = 130.004
+
+[node name="lightguy" type="Node2D"]
+
+[node name="lamp" type="CharacterBody2D" parent="."]
+script = ExtResource("1_b2rbt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="lamp"]
+position = Vector2(0, -1)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1nmjc")
+frame_progress = 0.254338
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lamp"]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_k2ppp")
+
+[node name="attack" type="Area2D" parent="lamp"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lamp/attack"]
+shape = SubResource("CircleShape2D_5v5g6")
+
+[node name="Area2D" type="Area2D" parent="lamp"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lamp/Area2D"]
+shape = SubResource("CircleShape2D_7la5m")
+
+[connection signal="body_entered" from="lamp/attack" to="lamp" method="_on_attack_body_entered"]
+[connection signal="body_entered" from="lamp/Area2D" to="lamp" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="lamp/Area2D" to="lamp" method="_on_area_2d_body_exited"]

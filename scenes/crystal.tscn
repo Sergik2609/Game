@@ -1,0 +1,112 @@
+[gd_scene load_steps=11 format=3 uid="uid://u5rqrisbvwpc"]
+
+[ext_resource type="Script" path="res://scenes/crystalix.gd" id="1_dbvuh"]
+[ext_resource type="Texture2D" uid="uid://o2o06sj3ovo0" path="res://sprites/entities_set.png" id="1_iiugl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmfxr"]
+atlas = ExtResource("1_iiugl")
+region = Rect2(48, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74b1f"]
+atlas = ExtResource("1_iiugl")
+region = Rect2(0, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4m2r7"]
+atlas = ExtResource("1_iiugl")
+region = Rect2(16, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ohsj"]
+atlas = ExtResource("1_iiugl")
+region = Rect2(32, 128, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q2i3c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmfxr")
+}],
+"loop": true,
+"name": &"atkHurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74b1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4m2r7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ohsj")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8i452"]
+radius = 7.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y2ele"]
+size = Vector2(8, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j4wxk"]
+radius = 195.003
+
+[node name="Crystal" type="Node2D" groups=["enemy"]]
+
+[node name="crystalix" type="CharacterBody2D" parent="." groups=["enemy"]]
+z_index = 4
+motion_mode = 1
+script = ExtResource("1_dbvuh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="crystalix"]
+sprite_frames = SubResource("SpriteFrames_q2i3c")
+animation = &"atkHurt"
+
+[node name="attack" type="Area2D" parent="crystalix"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="crystalix/attack"]
+shape = SubResource("CircleShape2D_8i452")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="crystalix"]
+visible = false
+top_level = true
+shape = SubResource("RectangleShape2D_y2ele")
+
+[node name="Area2D" type="Area2D" parent="crystalix"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="crystalix/Area2D"]
+shape = SubResource("CircleShape2D_j4wxk")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="crystalix"]
+modulate = Color(0.807843, 0.666667, 0.929412, 0.607843)
+self_modulate = Color(0.807843, 0.666667, 0.929412, 0.607843)
+z_index = -1
+scale = Vector2(1.32236, 1.32236)
+amount = 25
+lifetime = 0.5
+preprocess = 2.0
+speed_scale = 0.2
+randomness = 1.0
+draw_order = 1
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+particle_flag_align_y = true
+direction = Vector2(0, 0)
+gravity = Vector2(0, 490)
+angular_velocity_max = 5.0
+linear_accel_max = 24.24
+scale_amount_max = 3.0
+color = Color(0.807843, 0.666667, 0.929412, 0.607843)
+anim_speed_min = 5.17
+anim_speed_max = 16.81
+
+[connection signal="body_entered" from="crystalix/attack" to="crystalix" method="_on_attack_body_entered"]
+[connection signal="body_entered" from="crystalix/Area2D" to="crystalix" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="crystalix/Area2D" to="crystalix" method="_on_area_2d_body_exited"]

@@ -1,0 +1,134 @@
+[gd_scene load_steps=16 format=3 uid="uid://cn2k1bja4bp67"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_75u6w"]
+[ext_resource type="TileSet" uid="uid://dqg5mog55mmdl" path="res://scenes/main.tres" id="2_1pcty"]
+[ext_resource type="PackedScene" uid="uid://6t1wkm4axrde" path="res://scenes/pl.tscn" id="3_j7f5e"]
+[ext_resource type="Script" path="res://scenes/ship.gd" id="5_1y4yv"]
+[ext_resource type="Texture2D" uid="uid://cxkgy3jnprlxe" path="res://sprites/ship.png" id="5_ubleq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk6wm"]
+atlas = ExtResource("5_ubleq")
+region = Rect2(0, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_np4li"]
+atlas = ExtResource("5_ubleq")
+region = Rect2(64, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xqnj"]
+atlas = ExtResource("5_ubleq")
+region = Rect2(128, 0, 64, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xqbqg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fk6wm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_np4li")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xqnj")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vkpta"]
+size = Vector2(87, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80pr0"]
+size = Vector2(88, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kia1i"]
+size = Vector2(6, 75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hwrn"]
+size = Vector2(46, 61)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mudim"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wo42t"]
+size = Vector2(205, 20)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_75u6w")
+metadata/_edit_horizontal_guides_ = [-150.0]
+
+[node name="TileMap" type="TileMap" parent="." groups=["tile"]]
+texture_filter = 1
+tile_set = ExtResource("2_1pcty")
+format = 2
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("3_j7f5e")]
+position = Vector2(-30, -835)
+
+[node name="ship" type="CharacterBody2D" parent="."]
+position = Vector2(-2, -863)
+disable_mode = 2
+slide_on_ceiling = false
+floor_block_on_wall = false
+floor_snap_length = 7.0
+platform_on_leave = 2
+safe_margin = 0.001
+script = ExtResource("5_1y4yv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ship"]
+z_index = -1
+position = Vector2(0, 19)
+scale = Vector2(2.42969, 2.42969)
+sprite_frames = SubResource("SpriteFrames_xqbqg")
+animation = &"flying"
+
+[node name="floor" type="CollisionShape2D" parent="ship"]
+position = Vector2(-0.5, 47)
+shape = SubResource("RectangleShape2D_vkpta")
+
+[node name="top" type="CollisionShape2D" parent="ship"]
+position = Vector2(0, -42.5)
+shape = SubResource("RectangleShape2D_80pr0")
+
+[node name="seat" type="Node2D" parent="ship"]
+position = Vector2(-11, 17)
+
+[node name="door1" type="CollisionShape2D" parent="ship"]
+position = Vector2(-42, 1.5)
+shape = SubResource("RectangleShape2D_kia1i")
+
+[node name="door2" type="CollisionShape2D" parent="ship"]
+position = Vector2(41, 1.5)
+shape = SubResource("RectangleShape2D_kia1i")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ship"]
+position = Vector2(-1, 85.5)
+shape = SubResource("RectangleShape2D_0hwrn")
+
+[node name="Area2D" type="Area2D" parent="ship"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/Area2D"]
+position = Vector2(0, 28)
+shape = SubResource("CircleShape2D_mudim")
+
+[node name="Area2D2" type="Area2D" parent="ship"]
+position = Vector2(0, 77)
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/Area2D2"]
+position = Vector2(0, 28)
+shape = SubResource("CircleShape2D_mudim")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -941)
+shape = SubResource("RectangleShape2D_wo42t")
+
+[connection signal="body_entered" from="ship/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="ship/Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="ship/Area2D2" to="ship" method="_on_area_2d_2_body_entered"]
+[connection signal="body_exited" from="ship/Area2D2" to="ship" method="_on_area_2d_2_body_exited"]

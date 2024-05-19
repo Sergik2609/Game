@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=3 uid="uid://dclxyfvmfuuko"]
+
+[ext_resource type="Texture2D" uid="uid://o2o06sj3ovo0" path="res://sprites/entities_set.png" id="1_4rf7o"]
+[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_68qnv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gawqn"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ce1k"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkf45"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw4mm"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52sb3"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ld5og"]
+atlas = ExtResource("1_4rf7o")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7kwci"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gawqn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ce1k")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkf45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw4mm")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_52sb3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ld5og")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhynh"]
+radius = 130.004
+
+[node name="sheep" type="Node2D" groups=["enemy"]]
+
+[node name="enemy" type="CharacterBody2D" parent="." groups=["enemy"]]
+disable_mode = 2
+wall_min_slide_angle = 3.14159
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("1_68qnv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="enemy"]
+sprite_frames = SubResource("SpriteFrames_7kwci")
+animation = &"walk"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="enemy"]
+polygon = PackedVector2Array(7, 6, 4, 8, -4, 8, -7, 6, -7, 2, -2, -5, 6, -5, 6, -1)
+
+[node name="Area2D" type="Area2D" parent="enemy"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy/Area2D"]
+shape = SubResource("CircleShape2D_xhynh")
+
+[connection signal="body_entered" from="enemy/Area2D" to="enemy" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="enemy/Area2D" to="enemy" method="_on_area_2d_body_exited"]

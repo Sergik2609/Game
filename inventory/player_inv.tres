@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Inv" load_steps=12 format=3 uid="uid://b1mu51h8m8mpt"]
+
+[ext_resource type="Script" path="res://inv_slot.gd" id="2_bxea1"]
+[ext_resource type="Script" path="res://inventory.gd" id="2_ibhct"]
+
+[sub_resource type="Resource" id="Resource_266q3"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_kjrb1"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_dw8s5"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_cu1vq"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_7lvle"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_825if"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_ct5iv"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_1gnp1"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[sub_resource type="Resource" id="Resource_t5nsq"]
+script = ExtResource("2_bxea1")
+amount = 0
+
+[resource]
+script = ExtResource("2_ibhct")
+slots = Array[ExtResource("2_bxea1")]([SubResource("Resource_266q3"), SubResource("Resource_kjrb1"), SubResource("Resource_dw8s5"), SubResource("Resource_cu1vq"), SubResource("Resource_7lvle"), SubResource("Resource_825if"), SubResource("Resource_ct5iv"), SubResource("Resource_1gnp1"), SubResource("Resource_t5nsq")])
